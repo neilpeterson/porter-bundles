@@ -8,6 +8,7 @@ mixins:
   - exec
   - terraform
   - helm
+  - kubernetes
 
 credentials:
   - name: subscriptionid
@@ -28,7 +29,6 @@ credentials:
     env: TWITTER_ACCESS_SECRET
 
 parameters:
-
   - name: resource-prefix
     type: string
     default: "porter-twitter"
@@ -37,7 +37,6 @@ parameters:
     default: "pizza"
 
 install:
-
   - exec:
       description: "Azure CLI login"
       command: "az"
@@ -76,7 +75,7 @@ install:
           key: "AZURE_COSMOS_KEY"
 
   - exec:
-      description: "Get AKS Credentials"
+      description: "Get Kubernetes Credentials"
       command: "az"
       arguments:
         - "aks"
@@ -87,7 +86,7 @@ install:
         - "aks-svcat-cluster"
 
   - exec:
-      description: "Create AKS Secrets"
+      description: "Create Kubernetes Namespace"
       command: "kubectl"
       arguments:
         - "create"
@@ -95,7 +94,7 @@ install:
         - "{{ bundle.parameters.resource-prefix }}"
 
   - exec:
-      description: "Create text analytics AKS secrets"
+      description: "Create text analytics Kubernetes secrets"
       command: "kubectl"
       arguments:
         - "create"
@@ -107,7 +106,7 @@ install:
         - "--namespace={{ bundle.parameters.resource-prefix }}"
 
   - exec:
-      description: "Create storage queue AKS secrets"
+      description: "Create storage queue Kubernetes secrets"
       command: "kubectl"
       arguments:
         - "create"
@@ -119,7 +118,7 @@ install:
         - "--namespace={{ bundle.parameters.resource-prefix }}"
 
   - exec:
-      description: "Create Cosmos DB AKS secrets"
+      description: "Create Cosmos DB Kubernetes secrets"
       command: "kubectl"
       arguments:
         - "create"
@@ -153,7 +152,6 @@ install:
         filterText: "{{ bundle.parameters.search-text }}"
 
 uninstall:
-
   - exec:
       description: "Azure CLI login"
       command: "az"
@@ -168,7 +166,7 @@ uninstall:
         - "{{ bundle.credentials.azuretenantid}}"
 
   - exec:
-      description: "Get AKS Credentials"
+      description: "Get Kubernetes Credentials"
       command: "az"
       arguments:
         - "aks"
